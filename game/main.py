@@ -81,7 +81,7 @@ class Player(arcade.Sprite):
         self.width = 40
         self.height = 50
         self.health = PH
-        self.score = 5000
+        self.score = 0
         self.fire_timer = 0
         self.level = 1
         self.can_shoot = True

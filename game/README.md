@@ -34,7 +34,7 @@
 
 1. Клонируйте репозиторий:
 ```bash
-git clone <ваш-репозиторий>
+git clone Game_yandex_lms
 cd space_shooter
 ```
 

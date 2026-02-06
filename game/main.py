@@ -98,7 +98,7 @@ class Player(arcade.Sprite):
             self.si = (self.si + 1) % len(self.tx)
             self.texture = self.tx[self.si]
 
-    def update(self, dt=1/60):
+    def update(self, dt=1 / 60):
         super().update()
         self.center_x += self.change_x
         self.center_y += self.change_y
@@ -130,6 +130,8 @@ class Enemy(arcade.Sprite):
         self.width = 45
         self.height = 45
         bh = 20 + (lvl * 10)
+
+        # Определяем цвет в зависимости от типа врага
         if typ == 'fast':
             self.mhp = int(bh * 0.7)
             self.spd = 1.5
@@ -140,22 +142,26 @@ class Enemy(arcade.Sprite):
             self.spd = 0.7
             self.dmg = 25
             col = arcade.color.PURPLE
-        else:
+        else:  # basic
             self.mhp = bh
             self.spd = 1.0
             self.dmg = 15
             col = arcade.color.RED
+
         self.hp = self.mhp
         self.st = 0
         self.si = random.uniform(1.5, 3.0)
+
+        # Используем переданную текстуру или создаем с правильным цветом
         if tex is not None:
             self.texture = tex
         else:
+            # Создаем текстуру с цветом, соответствующим типу врага
             self.texture = arcade.make_soft_circle_texture(
                 self.width, col, outer_alpha=255
             )
 
-    def update(self, dt=1/60):
+    def update(self, dt=1 / 60):
         super().update()
         self.center_y -= ENEMY_SPEED * self.spd
         self.center_x += math.sin(self.center_y / 50) * 2
@@ -361,28 +367,46 @@ class GameView(arcade.View):
     def setup(self):
         assets = Path(__file__).parent / "assets"
         pf = [assets / f"player_skin{i}.png" for i in (1, 2, 3)]
+
         def pfb():
             return arcade.make_soft_square_texture(40, arcade.color.CYAN, outer_alpha=255)
+
         self.pl_tx = [self.load_tex(p, pfb) for p in pf]
+
+        # Загружаем текстуры врагов
         ef = [assets / f"enemy_skin{i}.png" for i in (1, 2, 3)]
+
         def efb():
-            return arcade.make_soft_circle_texture(45, arcade.color.RED, outer_alpha=255)
-        self.en_tx = [self.load_tex(p, efb) for p in ef]
+            # Возвращаем None, чтобы враги создавали свои текстуры с правильными цветами
+            return None
+
+        self.en_tx = []
+        for p in ef:
+            tx = self.load_tex(p, efb)
+            if tx is not None:  # Если текстура загружена успешно
+                self.en_tx.append(tx)
+
         bf = [assets / f"boss_phase{i}.png" for i in (1, 2, 3)]
+
         def bfb():
             return arcade.make_soft_square_texture(160, arcade.color.DARK_RED, outer_alpha=255)
+
         self.boss_tx = [self.load_tex(p, bfb) for p in bf]
         pm = {
             'health': assets / 'powerup_health.png',
             'speed': assets / 'powerup_speed.png',
             'damage': assets / 'powerup_damage.png'
         }
+
         def hfb():
             return arcade.make_soft_circle_texture(30, arcade.color.GREEN, outer_alpha=200)
+
         def sfb():
             return arcade.make_soft_circle_texture(30, arcade.color.BLUE, outer_alpha=200)
+
         def dfb():
             return arcade.make_soft_circle_texture(30, arcade.color.ORANGE, outer_alpha=200)
+
         self.pup_tx = {
             'health': self.load_tex(pm['health'], hfb),
             'speed': self.load_tex(pm['speed'], sfb),
@@ -467,9 +491,13 @@ class GameView(arcade.View):
         typs = ['basic', 'fast', 'tank']
         wts = [0.6, 0.25, 0.15]
         t = random.choices(typs, weights=wts)[0]
+
+        # Используем случайную текстуру из загруженных, если они есть
         tx = None
-        if self.en_tx:
+        if self.en_tx:  # Если есть загруженные текстуры
             tx = random.choice(self.en_tx)
+
+        # Врагу передаем тип и текстуру (может быть None)
         e = Enemy(t, self.cur_lvl, tex=tx)
         e.center_x = random.randint(50, SCREEN_WIDTH - 50)
         e.center_y = SCREEN_HEIGHT + 30

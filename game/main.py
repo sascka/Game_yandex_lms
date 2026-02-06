@@ -131,7 +131,6 @@ class Enemy(arcade.Sprite):
         self.height = 45
         bh = 20 + (lvl * 10)
 
-        # Определяем цвет в зависимости от типа врага
         if typ == 'fast':
             self.mhp = int(bh * 0.7)
             self.spd = 1.5
@@ -142,7 +141,7 @@ class Enemy(arcade.Sprite):
             self.spd = 0.7
             self.dmg = 25
             col = arcade.color.PURPLE
-        else:  # basic
+        else:
             self.mhp = bh
             self.spd = 1.0
             self.dmg = 15
@@ -152,11 +151,9 @@ class Enemy(arcade.Sprite):
         self.st = 0
         self.si = random.uniform(1.5, 3.0)
 
-        # Используем переданную текстуру или создаем с правильным цветом
         if tex is not None:
             self.texture = tex
         else:
-            # Создаем текстуру с цветом, соответствующим типу врага
             self.texture = arcade.make_soft_circle_texture(
                 self.width, col, outer_alpha=255
             )
@@ -373,17 +370,15 @@ class GameView(arcade.View):
 
         self.pl_tx = [self.load_tex(p, pfb) for p in pf]
 
-        # Загружаем текстуры врагов
         ef = [assets / f"enemy_skin{i}.png" for i in (1, 2, 3)]
 
         def efb():
-            # Возвращаем None, чтобы враги создавали свои текстуры с правильными цветами
             return None
 
         self.en_tx = []
         for p in ef:
             tx = self.load_tex(p, efb)
-            if tx is not None:  # Если текстура загружена успешно
+            if tx is not None:
                 self.en_tx.append(tx)
 
         bf = [assets / f"boss_phase{i}.png" for i in (1, 2, 3)]
@@ -491,13 +486,10 @@ class GameView(arcade.View):
         typs = ['basic', 'fast', 'tank']
         wts = [0.6, 0.25, 0.15]
         t = random.choices(typs, weights=wts)[0]
-
-        # Используем случайную текстуру из загруженных, если они есть
         tx = None
-        if self.en_tx:  # Если есть загруженные текстуры
+        if self.en_tx:
             tx = random.choice(self.en_tx)
 
-        # Врагу передаем тип и текстуру (может быть None)
         e = Enemy(t, self.cur_lvl, tex=tx)
         e.center_x = random.randint(50, SCREEN_WIDTH - 50)
         e.center_y = SCREEN_HEIGHT + 30

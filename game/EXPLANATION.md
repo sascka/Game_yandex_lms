@@ -1,4 +1,4 @@
-<img width="107" height="76" alt="image" src="https://github.com/user-attachments/assets/c4cc6f17-ad22-4eff-b9c0-ceb9946a318a" /># Пояснительная записка к проекту "Космический Шутер"
+# Пояснительная записка к проекту "Космический Шутер"
 
 ## 1. Введение
 

@@ -1,4 +1,4 @@
-<img width="107" height="76" alt="image" src="https://github.com/user-attachments/assets/c8604b8e-f4b3-492a-9d1b-0161db0d9af0" /># Пояснительная записка к проекту "Космический Шутер"
+<img width="107" height="76" alt="image" src="https://github.com/user-attachments/assets/c4cc6f17-ad22-4eff-b9c0-ceb9946a318a" /># Пояснительная записка к проекту "Космический Шутер"
 
 ## 1. Введение
 
@@ -260,7 +260,7 @@ space_shooter/
 
 ### 3.2. Объём работы
 
-- **Строк кода**: 990
+- **Строк кода**: 892
 - **Классов**: 12
 - **Методов**: 64
 - **Констант**: 18

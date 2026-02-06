@@ -35,7 +35,7 @@
 1. Клонируйте репозиторий:
 ```bash
 git clone https://github.com/sascka/Game_yandex_lms.git
-cd game
+cd Game_yandex_lms\game
 ```
 
 2. Установите зависимости:
